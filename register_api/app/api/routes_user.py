@@ -4,7 +4,7 @@ from app.schemas import UserCreate
 from app.models import User
 from app.database import get_db
 from app.auth import generate_email_token, verify_email_token
-from app.mailer import send_verification_email
+# from app.mailer import send_verification_email
 from passlib.context import CryptContext
 
 router = APIRouter()
@@ -22,7 +22,7 @@ async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     token = generate_email_token(new_user.email)
-    await send_verification_email(new_user.email, token)
+    # await send_verification_email(new_user.email, token)
 
     return {"message": "Регистрация успешна. Подтвердите email."}
 
