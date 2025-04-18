@@ -3,10 +3,10 @@ name = "sirius-app"
 version = "0.1.0"
 description = "Сервис для регистрации и вопросов жителей ФТ Сириус"
 authors = ["Your Name <email@example.com>"]
-packages = [{ include = "app" }]
+# packages = [{ include = "app" }]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 fastapi = "^0.110"
 uvicorn = "^0.29"
 sqlalchemy = "^2.0"
@@ -16,6 +16,8 @@ python-jose = {extras = ["cryptography"], version = "^3.3"}
 passlib = {extras = ["bcrypt"], version = "^1.7"}
 fastapi-mail = "^1.4"
 pydantic = "^2.6"
+pydantic-settings = "^2.2"
+bcrypt = "<4.1.0"
 
 [build-system]
 requires = ["poetry-core"]

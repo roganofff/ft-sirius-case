@@ -7,10 +7,10 @@ conf = ConnectionConfig(
     MAIL_PASSWORD=MAIL_PASSWORD,
     MAIL_FROM=MAIL_USERNAME,
     MAIL_PORT=587,
-    MAIL_SERVER="smtp.yandex.ru",  # Или smtp.gmail.com
+    MAIL_SERVER="smtp.yandex.ru",
     MAIL_FROM_NAME=MAIL_FROM_NAME,
-    MAIL_STARTTLS=True,     # ← включено
-    MAIL_SSL_TLS=False,     # ← выключено
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,
     USE_CREDENTIALS=True
 )
 
@@ -24,3 +24,4 @@ async def send_verification_email(email: EmailStr, token: str):
     )
     fm = FastMail(conf)
     await fm.send_message(message)
+
