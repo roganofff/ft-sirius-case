@@ -3,8 +3,6 @@ from pydantic import BaseModel
 from typing import List
 from sentence_transformers import SentenceTransformer, util
 import torch
-
-from requests_api.src.app.config import settings
 from requests_api.src.app.models.schemas import MatchResponse
 
 router = APIRouter(
@@ -16,8 +14,6 @@ model = SentenceTransformer("cointegrated/rubert-tiny2")
 
 base_qa_pairs: List[tuple[str, str]] = []
 base_embeddings = []
-
-THRESHOLD = float(settings.SIMILARITY_THRESHOLD)
 
 class BaseQuestion(BaseModel):
     question: str
@@ -43,18 +39,6 @@ async def add_base_question(q: BaseQuestion):
 @router.post("/match", response_model=List[MatchResult])
 async def match_question(req: MatchRequest):
     try:
-        results = await compute_similarity(req.description)
-
-        results.sort(key=lambda x: x["score"], reverse=True)
-
-        top = results[0]
-        if top["score"] < THRESHOLD:
-            return [MatchItem(
-                question=req.description,
-                answer="Я не понял вашего вопроса, напишите его иначе.",
-                score=top["score"]
-            )]
-
         if not base_qa_pairs:
             raise HTTPException(status_code=400, detail="Base Q&A list is empty.")
 
