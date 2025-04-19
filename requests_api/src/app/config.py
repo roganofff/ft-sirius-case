@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     CLICKHOUSE_USER: str
     CLICKHOUSE_PASSWORD: str
     CLICKHOUSE_DB: str
+    SIMILARITY_THRESHOLD: float
     LOG_LEVEL: str = "INFO"
     LOG_FILE: str = "app.log"
 
