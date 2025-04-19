@@ -29,8 +29,11 @@
     const chatWindow = document.getElementById('chat-window');
 
     async function sendMessage(text) {
-     // …отрисовка сообщения пользователя…
-
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.textContent = text;
+      chatWindow.appendChild(userMsg);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
      input.disabled = sendBtn.disabled = true;
      try {
        const resp = await fetch("/api/requests/match", {
@@ -44,15 +47,20 @@
        // теперь data — это массив { question, score }
        const botMsg = document.createElement("div");
        botMsg.className = "message bot";
-       botMsg.innerHTML = data
-         .map(item => `<p>${item.question} <small>${item.score.toFixed(2)}</small></p>`)
-         .join("");
+      //  botMsg.innerHTML = data
+      //    .map(item => `<p>${item.answer}</p>`)
+      //    .join("");
+       botMsg.textContent = data[0]?.answer || "Извините, не удалось найти ответ.";
        chatWindow.appendChild(botMsg);
        chatWindow.scrollTop = chatWindow.scrollHeight;
 
      } catch (err) {
        console.error(err);
-       // …ошибка сети…
+       console.error(err);
+        const errMsg = document.createElement('div');
+        errMsg.className = 'message error';
+        errMsg.textContent = 'Ошибка сети, попробуйте ещё раз.';
+        chatWindow.appendChild(errMsg);
      } finally {
        input.disabled = sendBtn.disabled = false;
        input.value = "";

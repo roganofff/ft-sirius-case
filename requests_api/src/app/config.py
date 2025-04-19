@@ -10,6 +10,6 @@ class Settings(BaseSettings):
     LOG_FILE: str = "app.log"
 
     class Config:
-        env_file = "../.env"
+        env_file = "requests_api/.env"
 
 settings = Settings()

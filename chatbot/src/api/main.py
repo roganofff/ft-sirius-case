@@ -9,7 +9,9 @@ from chatbot.src.api.routes.chat import router as chat_router
 from chatbot.src.api.routes.prompt import router as prompt_router
 from requests_api.src.app.routes.requests import router as requests_router
 from requests_api.src.app.routes.similarity import router as similarity_router
+import os
 
+print(os.getcwd())
 app = FastAPI()
 
 BASE_DIR = Path(__file__).resolve().parent
