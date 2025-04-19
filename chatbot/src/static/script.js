@@ -33,7 +33,7 @@ function addMessageToChat({ text, sender, buttons }) {
 
   const authorName = document.createElement('div')
   authorName.className = 'author-name'
-  authorName.textContent = sender === 'user' ? 'Вы' : 'Чат-бот'
+  authorName.textContent = sender === 'user' ? 'Вы' : 'Умнопёс'
 
   const messageBubble = document.createElement('div')
   messageBubble.className = `message ${sender}-message`
