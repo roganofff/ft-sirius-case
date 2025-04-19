@@ -61,7 +61,7 @@ function addMessageToChat({ text, sender, buttons }) {
   if (sender === 'bot') {
     const botAvatar = document.createElement('img')
     botAvatar.className = 'avatar'
-    botAvatar.src = 'AVA.png'
+    botAvatar.src = 'static/img/avatar.png'
     botAvatar.alt = 'Аватар бота'
     messageWrapper.append(botAvatar, messageContent)
   } else {
