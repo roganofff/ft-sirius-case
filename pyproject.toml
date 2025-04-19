@@ -18,6 +18,7 @@ torch = "^2.6.0"
 sentence-transformers = "^4.1.0"
 openai = "^1.75.0"
 hf-xet = "^1.0.3"
+prometheus-fastapi-instrumentator = "^7.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

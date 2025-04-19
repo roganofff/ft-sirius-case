@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.templating import Jinja2Templates
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from chatbot.src.api.routes.chat import router as chat_router
 from chatbot.src.api.routes.prompt import router as prompt_router
@@ -34,3 +35,4 @@ app.include_router(chat_router)
 app.include_router(prompt_router)
 app.include_router(requests_router)
 app.include_router(similarity_router)
+Instrumentator().instrument(app).expose(app)

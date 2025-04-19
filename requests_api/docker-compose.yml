@@ -31,9 +31,11 @@ services:
       CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
       CLICKHOUSE_DB: ${CLICKHOUSE_DB}
     depends_on:
-      clickhouse:
-        condition: service_healthy
+      clickhouse
     restart: unless-stopped
+
+
+  
 
 
 volumes:

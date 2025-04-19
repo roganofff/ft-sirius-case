@@ -4,8 +4,8 @@ services:
     container_name: clickhouse
     restart: always
     ports:
-      - "8123:8123"   # HTTP‑порт
-      - "9000:9000"   # TCP‑порт для драйвера
+      - "8123:8123"  
+      - "9000:9000"   
     volumes:
       - clickhouse_data:/var/lib/clickhouse
     healthcheck:
@@ -26,10 +26,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # Переменные для чат‑модуля
       OPENAI_API_KEY: "${OPENAI_API_KEY}"
       LLM_PROXY_URL: "${LLM_PROXY_URL}"
-      # Переменные для модуля requests_api
       CLICKHOUSE_HOST: "clickhouse"
       CLICKHOUSE_PORT: "9000"
       CLICKHOUSE_USER: "default"
@@ -37,6 +35,32 @@ services:
       CLICKHOUSE_DB: "default"
       LOG_LEVEL: "INFO"
       LOG_FILE: "app.log"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+   
+    depends_on:
+      - sirius-bot
+      - node-exporter
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
 
 volumes:
   clickhouse_data:
