@@ -1,0 +1,414 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-size: 14px;
+}
+
+.header {
+  background-color: #fff;
+  padding: 10px 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 11px;
+}
+
+.logo-text-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header img {
+  height: 40px;
+}
+
+.service {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+  line-height: 1.2; /* Adjust line height for better spacing */
+}
+
+.header .buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.header .buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Montserrat, bold;
+  transition: all 0.3s ease;
+}
+
+.header .buttons .download {
+  background-color: #ffff;
+  color: #54BC00;
+  border: 1px solid #54BC00;
+}
+
+.header .buttons .cabinet {
+  background-color: #54BC00;
+  color: #fff;
+}
+
+.header .buttons button:hover {
+  transform: scale(1.05);
+}
+
+/* Navigation Bar */
+.nav {
+  background-color: #333;
+  padding: 20px 150px;
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.nav span {
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: all 0.3s ease;
+}
+
+.nav span:hover {
+  background-color: #444;
+  border-radius: 5px;
+}
+
+/* Chat Container */
+.chat-container {
+  flex: 1;
+  margin: 0 150px; /* Add side margins to the container */
+  padding-bottom: 100px; /* Add bottom padding so last message isn't hidden by input */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Increase gap between message wrappers */
+}
+
+/* New styles for message wrapper, avatar, name, and content */
+.message-wrapper {
+    display: flex;
+    padding-top:25px;
+    align-items: flex-start; /* Align items to the top */
+    gap: 10px; /* Space between avatar/content */
+    max-width: 70%; /* Limit the width of the message block */
+    opacity: 0; /* Start hidden for animation */
+    transform: translateY(20px); /* Start slightly lower for animation */
+    animation: fadeInUp 0.5s forwards; /* Apply animation */
+}
+
+.message-wrapper.bot {
+    align-self: flex-start; /* Bot messages align left */
+}
+
+.message-wrapper.user {
+    align-self: flex-end; /* User messages align right */
+    flex-direction: row-reverse; /* Reverse order for user messages */
+}
+
+.avatar {
+    width: 60px; /* Avatar size */
+    height: 60px;
+    border-radius: 50%; /* Make avatar round */
+    object-fit: cover; /* Ensure image covers the area without stretching */
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+    border: 1px solid #ddd; /* Add a subtle border */
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column; /* Name above message bubble, buttons below bubble */
+    /* max-width: calc(100% - 50px); /* Adjust max-width within wrapper if needed */
+    flex-grow: 1; /* Allow content to grow */
+}
+
+.author-name {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 2px; /* Space between name and message */
+}
+
+.message-wrapper.user .author-name {
+    text-align: right; /* Align user name to the right */
+}
+
+
+/* Existing message bubble styles - slightly adjusted */
+.message {
+  /* Removed max-width, align-self, margin-right from here */
+  padding: 10px 15px; /* Adjust padding */
+  border-radius: 15px;
+  /* Removed margin-bottom: 80px - gap is handled by message-wrapper gap */
+
+  font-size: 14px;
+  word-wrap: break-word; /* Ensure long words break */
+  white-space: pre-wrap; /* Preserve line breaks created by <br> */
+}
+
+.bot-message {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  /* align-self is now on message-wrapper */
+}
+
+.user-message {
+  background-color: #e0f7e0;
+  border: 1px solid #c8e6c9;
+  /* align-self is now on message-wrapper */
+}
+
+/* New styles for message buttons */
+.message-buttons {
+    display: flex; /* Arrange buttons horizontally */
+    flex-wrap: wrap; /* Allow buttons to wrap to the next line if too wide */
+    gap: 8px; /* Space between buttons */
+    margin-top: 10px; /* Space between message bubble and buttons */
+}
+
+.message-button {
+    padding: 8px 12px;
+    border: 1px solid #54BC00; /* Border color */
+    background-color: #fff; /* Background */
+    color: #54BC00; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 13px; /* Slightly smaller font */
+    font-family: Montserrat, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.message-button:hover {
+    background-color: #54BC00;
+    color: #fff;
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+.message-button:active {
+    transform: translateY(0);
+    background-color: #48a000; /* Darker green on click */
+}
+
+
+/* Input Container */
+.input-container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 25px; /* Slightly larger radius */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: calc(100% - 300px); /* Match chat container width */
+  max-width: 1200px;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 10px 20px;
+  border: none; /* Remove border */
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  font-family: Montserrat, sans-serif; /* Use normal font weight */
+  text-align: left;
+  width: 100%;
+  background-color: transparent; /* Make input background transparent */
+}
+
+.input-container button {
+  background-color: #54BC00;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.input-container button img {
+  width: 20px;
+  height: 20px;
+  margin-left: 10%; /* Adjust image positioning slightly */
+}
+
+.input-container button:hover {
+  transform: scale(1.1);
+}
+
+.input-container button:active {
+  transform: scale(0.95);
+}
+/* Styles for the disabled state of the send button */
+.input-container button.disabled {
+  background-color: #ccc; /* Grayed-out color */
+  cursor: not-allowed; /* Change cursor to indicate inactivity */
+  pointer-events: none; /* Disable mouse interactions */
+  transform: scale(1); /* Reset any hover scaling */
+}
+
+/* Optional: Add a pulsing effect to indicate cooldown */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Apply pulse only when cooldown class is present */
+.input-container button.cooldown {
+  animation: pulse 2s ease-in-out;
+}
+
+/* Animation for message entry */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптация под мобильные */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 15px;
+    flex-direction: row; /* Keep row direction */
+    justify-content: space-between;
+    align-items: center;
+
+  }
+
+  .header img {
+    height: 35px;
+  }
+
+  .header .service {
+    flex: 1; /* Allow text to take up space */
+    /* color:#fff;  Keep text color consistent - removed as it was white on white bg */
+    font-size: 13px;
+    text-align: center;
+    color:#fff;
+  }
+
+  .header .buttons {
+    gap: 5px;
+  }
+
+  .header .buttons button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .nav {
+    padding: 10px 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .nav span {
+    flex: 0 0 auto;
+    padding: 5px 10px;
+    background-color: #444; /* Add background for visibility */
+    border-radius: 5px;
+  }
+
+  .chat-container {
+    margin: 0 10px; /* Adjust mobile margin */
+    padding-top: 10px;
+    padding-bottom: 90px; /* Ensure space for input */
+    gap: 10px; /* Adjust gap */
+  }
+
+  .message-wrapper {
+      max-width: 95%; /* Wider messages on mobile */
+      gap: 8px; /* Adjust gap */
+  }
+
+  .avatar {
+      width: 35px; /* Smaller avatar on mobile */
+      height: 35px;
+  }
+
+  .author-name {
+      font-size: 11px; /* Smaller name on mobile */
+  }
+
+  .message {
+      padding: 8px 12px; /* Adjust message padding */
+      font-size: 13px;
+      border-radius: 10px;
+  }
+
+  .message-buttons {
+      gap: 6px; /* Smaller gap between buttons on mobile */
+      margin-top: 8px; /* Smaller margin above buttons */
+  }
+
+  .message-button {
+      padding: 6px 10px; /* Smaller padding for buttons */
+      font-size: 12px; /* Smaller font for buttons */
+  }
+
+  .input-container {
+    left: 0;
+    right: 0;
+    transform: none;
+    margin: 0 auto;
+    width: 95%; /* Adjust width */
+    bottom: 10px;
+    padding: 8px;
+    border-radius: 5px;
+  }
+
+  .input-container input {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+
+  .input-container button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .input-container button img {
+    width: 18px;
+    height: 18px;
+  }
+}
