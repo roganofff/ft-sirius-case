@@ -96,7 +96,8 @@ async function sendMessage() {
     if (score < 0.7) {
         addMessageToChat({ text: 'Не можем найти ответ, попробуйте перефразировать запрос', sender: 'bot' })
     } else {
-        addMessageToChat({ text: answer, sender: 'bot' })
+      const answer = data[0]?.answer || 'Извините, не удалось найти ответ.'
+      addMessageToChat({ text: answer, sender: 'bot' })
     }
   } catch {
     addMessageToChat({ text: 'Ошибка сети, попробуйте ещё раз.', sender: 'bot' })
