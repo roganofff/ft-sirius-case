@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Справочный бот «Сириус»</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="chat-container">
+      <div id="chat-window">
+
+      </div>
+      <form id="chat-form">
+          <input
+                  id="message-input"
+                  type="text"
+                  placeholder="Введите запрос…"
+                  autocomplete="off"
+                  required
+          />
+          <button type="submit" id="send-btn">Отправить</button>
+      </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatWindow = document.getElementById('chat-window');
+
+    async function sendMessage(text) {
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.textContent = text;
+      chatWindow.appendChild(userMsg);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+
+      input.disabled = true;
+      sendBtn.disabled = true;
+
+      try {
+        const url = "/api/v1/prompt";
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text
+          })
+        });
+        const data = await resp.json();
+
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = data.reply;
+        chatWindow.appendChild(botMsg);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+      } catch (err) {
+        console.error(err);
+        const errMsg = document.createElement('div');
+        errMsg.className = 'message error';
+        errMsg.textContent = 'Ошибка сети, попробуйте ещё раз.';
+        chatWindow.appendChild(errMsg);
+      } finally {
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const txt = input.value.trim();
+      if (txt) sendMessage(txt);
+    });
+  </script>
+
+</body>
+</html>
