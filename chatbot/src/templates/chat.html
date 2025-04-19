@@ -29,45 +29,37 @@
     const chatWindow = document.getElementById('chat-window');
 
     async function sendMessage(text) {
-      const userMsg = document.createElement('div');
-      userMsg.className = 'message user';
-      userMsg.textContent = text;
-      chatWindow.appendChild(userMsg);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+     // …отрисовка сообщения пользователя…
 
-      input.disabled = true;
-      sendBtn.disabled = true;
+     input.disabled = sendBtn.disabled = true;
+     try {
+       const resp = await fetch("/api/requests/match", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ description: text })
+       });
+       resp.raiseForStatus?.(); // если нужно
+       const data = await resp.json();
 
-      try {
-        const url = "/api/v1/prompt";
-        const resp = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: text
-          })
-        });
-        const data = await resp.json();
+       // теперь data — это массив { question, score }
+       const botMsg = document.createElement("div");
+       botMsg.className = "message bot";
+       botMsg.innerHTML = data
+         .map(item => `<p>${item.question} <small>${item.score.toFixed(2)}</small></p>`)
+         .join("");
+       chatWindow.appendChild(botMsg);
+       chatWindow.scrollTop = chatWindow.scrollHeight;
 
-        const botMsg = document.createElement('div');
-        botMsg.className = 'message bot';
-        botMsg.textContent = data.reply;
-        chatWindow.appendChild(botMsg);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+     } catch (err) {
+       console.error(err);
+       // …ошибка сети…
+     } finally {
+       input.disabled = sendBtn.disabled = false;
+       input.value = "";
+       input.focus();
+     }
+}
 
-      } catch (err) {
-        console.error(err);
-        const errMsg = document.createElement('div');
-        errMsg.className = 'message error';
-        errMsg.textContent = 'Ошибка сети, попробуйте ещё раз.';
-        chatWindow.appendChild(errMsg);
-      } finally {
-        input.disabled = false;
-        sendBtn.disabled = false;
-        input.value = '';
-        input.focus();
-      }
-    }
 
     form.addEventListener('submit', e => {
       e.preventDefault();

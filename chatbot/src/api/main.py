@@ -7,6 +7,8 @@ from starlette.templating import Jinja2Templates
 
 from chatbot.src.api.routes.chat import router as chat_router
 from chatbot.src.api.routes.prompt import router as prompt_router
+from requests_api.src.app.routes.requests import router as requests_router
+from requests_api.src.app.routes.similarity import router as similarity_router
 
 app = FastAPI()
 
@@ -28,3 +30,5 @@ app.add_middleware(
 
 app.include_router(chat_router)
 app.include_router(prompt_router)
+app.include_router(requests_router)
+app.include_router(similarity_router)

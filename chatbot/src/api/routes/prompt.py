@@ -4,8 +4,7 @@ from fastapi import APIRouter
 from openai import OpenAI
 
 from chatbot.config.settings import settings
-from chatbot.src.schemas.chat import ChatRequest, ChatResponse
-from chatbot.src.schemas.selection import SelectionRequest, SelectionResponse
+from chatbot.src.models.schemas import ChatRequest, ChatResponse, SelectionRequest, SelectionResponse
 
 router = APIRouter()
 
