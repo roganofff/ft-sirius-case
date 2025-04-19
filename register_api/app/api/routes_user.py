@@ -4,27 +4,44 @@ from app.schemas import UserCreate
 from app.models import User
 from app.database import get_db
 from app.auth import generate_email_token, verify_email_token
-# from app.mailer import send_verification_email
+from app.mailer import send_verification_email
 from passlib.context import CryptContext
 
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 @router.post("/register/")
 async def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.email == user.email).first():
+    existing_user = db.query(User).filter(User.email == user.email).first()
+    if existing_user:
+        if not existing_user.is_verified:
+            token = generate_email_token(existing_user.email)
+            try:
+                await send_verification_email(existing_user.email, token)
+            except Exception as e:
+                raise HTTPException(status_code=500, detail="Не удалось отправить письмо подтверждения")
+            return {"message": "Пользователь уже зарегистрирован. Мы выслали письмо для подтверждения повторно."}
         raise HTTPException(status_code=400, detail="Пользователь уже существует")
 
     hashed_password = pwd_context.hash(user.password)
-    new_user = User(email=user.email, hashed_password=hashed_password, full_name=user.full_name)
+    new_user = User(
+        email=user.email,
+        hashed_password=hashed_password,
+        full_name=user.full_name
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
     token = generate_email_token(new_user.email)
-    # await send_verification_email(new_user.email, token)
+    try:
+        await send_verification_email(new_user.email, token)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Не удалось отправить письмо подтверждения")
 
     return {"message": "Регистрация успешна. Подтвердите email."}
+
 
 @router.get("/verify")
 def verify_email(token: str, db: Session = Depends(get_db)):
