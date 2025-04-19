@@ -95,7 +95,7 @@ poetry run uvicorn chatbot.src.api.main:app --reload
 
 ---
 
-## 🧑‍💻 Авторы
+## 🧑‍💻 Team NoKeepish
 
 - Демьяненко Вячеслав
 - Колкарёва Даяна
